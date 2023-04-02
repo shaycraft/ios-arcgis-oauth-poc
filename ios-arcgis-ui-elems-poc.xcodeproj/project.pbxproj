@@ -13,7 +13,26 @@
 		C72FDDD229D91C630072DABB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C72FDDD029D91C630072DABB /* Main.storyboard */; };
 		C72FDDD429D91C650072DABB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72FDDD329D91C650072DABB /* Assets.xcassets */; };
 		C72FDDD729D91C650072DABB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C72FDDD529D91C650072DABB /* LaunchScreen.storyboard */; };
+		C7CFED2429D94AF200702382 /* Runtimecore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7CFED2229D94AF100702382 /* Runtimecore.xcframework */; };
+		C7CFED2529D94AF200702382 /* Runtimecore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7CFED2229D94AF100702382 /* Runtimecore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C7CFED2629D94AF200702382 /* ArcGIS.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7CFED2329D94AF200702382 /* ArcGIS.xcframework */; };
+		C7CFED2729D94AF200702382 /* ArcGIS.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7CFED2329D94AF200702382 /* ArcGIS.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C7CFED2829D94AF200702382 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C7CFED2729D94AF200702382 /* ArcGIS.xcframework in Embed Frameworks */,
+				C7CFED2529D94AF200702382 /* Runtimecore.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C72FDDC729D91C630072DABB /* ios-arcgis-ui-elems-poc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-arcgis-ui-elems-poc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -25,6 +44,8 @@
 		C72FDDD629D91C650072DABB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C72FDDD829D91C650072DABB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C72FDDDE29D91CA20072DABB /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		C7CFED2229D94AF100702382 /* Runtimecore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Runtimecore.xcframework; path = ../../../Library/SDKs/ArcGIS/Frameworks/Runtimecore.xcframework; sourceTree = "<group>"; };
+		C7CFED2329D94AF200702382 /* ArcGIS.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ArcGIS.xcframework; path = ../../../Library/SDKs/ArcGIS/Frameworks/ArcGIS.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7CFED2629D94AF200702382 /* ArcGIS.xcframework in Frameworks */,
+				C7CFED2429D94AF200702382 /* Runtimecore.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +66,7 @@
 			children = (
 				C72FDDC929D91C630072DABB /* ios-arcgis-ui-elems-poc */,
 				C72FDDC829D91C630072DABB /* Products */,
+				C7CFED2129D94AF100702382 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -69,6 +93,15 @@
 			path = "ios-arcgis-ui-elems-poc";
 			sourceTree = "<group>";
 		};
+		C7CFED2129D94AF100702382 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C7CFED2329D94AF200702382 /* ArcGIS.xcframework */,
+				C7CFED2229D94AF100702382 /* Runtimecore.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -79,6 +112,7 @@
 				C72FDDC329D91C620072DABB /* Sources */,
 				C72FDDC429D91C620072DABB /* Frameworks */,
 				C72FDDC529D91C620072DABB /* Resources */,
+				C7CFED2829D94AF200702382 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

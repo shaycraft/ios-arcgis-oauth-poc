@@ -6,14 +6,29 @@
 //
 
 import UIKit
+import ArcGIS
 
 class ViewController: UIViewController {
-
+    @IBOutlet weak var mapView: AGSMapView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        self._setupMap()
     }
-
-
+    
+    
+    // private functions
+    
+    private func _setupMap() -> Void {
+        let map = AGSMap(basemapStyle: .arcGISTopographic)
+        
+        let zoomPoint = AGSViewpoint(latitude: 40, longitude: -88, scale: 11500_00)
+        
+        self.mapView.map = map
+        
+        self.mapView.setViewpoint(zoomPoint)
+    }
+    
 }
-
