@@ -32,9 +32,11 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         self.mapView.setViewpoint(zoomPoint)
     }
     
+    
     // interface methods for AGSGeoViewTouchDelegate
     func geoView(_ geoView: AGSGeoView, didTapAtScreenPoint screenPoint: CGPoint, mapPoint: AGSPoint) -> Void {
-        print(">>>>> DEBUG: <<<<<< touched at Point = {\(String(describing: mapPoint))}")
+        let latLongPoint = AGSGeometryEngine.projectGeometry(mapPoint, to: AGSSpatialReference(wkid: 4326)!)
+        print(">>>>>>> DEBUG: <<<<<<< Point = \(String(describing: latLongPoint))")
     }
     
 }
