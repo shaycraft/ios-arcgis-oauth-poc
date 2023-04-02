@@ -24,6 +24,7 @@
 		C72FDDD329D91C650072DABB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C72FDDD629D91C650072DABB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C72FDDD829D91C650072DABB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C72FDDDE29D91CA20072DABB /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 				C72FDDD329D91C650072DABB /* Assets.xcassets */,
 				C72FDDD529D91C650072DABB /* LaunchScreen.storyboard */,
 				C72FDDD829D91C650072DABB /* Info.plist */,
+				C72FDDDE29D91CA20072DABB /* Secrets.xcconfig */,
 			);
 			path = "ios-arcgis-ui-elems-poc";
 			sourceTree = "<group>";
@@ -168,6 +170,7 @@
 /* Begin XCBuildConfiguration section */
 		C72FDDD929D91C650072DABB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C72FDDDE29D91CA20072DABB /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -228,6 +231,7 @@
 		};
 		C72FDDDA29D91C650072DABB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C72FDDDE29D91CA20072DABB /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
