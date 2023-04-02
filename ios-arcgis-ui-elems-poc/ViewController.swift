@@ -36,10 +36,10 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     
     // interface methods for AGSGeoViewTouchDelegate
     func geoView(_ geoView: AGSGeoView, didTapAtScreenPoint screenPoint: CGPoint, mapPoint: AGSPoint) -> Void {
-        let latLongPoint = AGSGeometryEngine.projectGeometry(mapPoint, to: AGSSpatialReference(wkid: 4326)!)! as! AGSPoint
-        print(">>>>>>> DEBUG: <<<<<<< Point = \(String(describing: latLongPoint))")
+        let projectPoint = AGSGeometryEngine.projectGeometry(mapPoint, to: AGSSpatialReference(wkid: 4326)!)! as! AGSPoint
+        print(">>>>>>> DEBUG: <<<<<<< Point = \(String(describing: projectPoint))")
         
-        self.debugLabel.text = "Lat/long = {\( String(format: "%.3f", latLongPoint.x)), \(String(format: "%.3f", latLongPoint.y)) }"
+        self.debugLabel.text = "Lat/long = {\( String(format: "%.3f", projectPoint.x)), \(String(format: "%.3f", projectPoint.y)) }"
     }
     
 }
