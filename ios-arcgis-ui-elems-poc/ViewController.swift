@@ -8,7 +8,7 @@
 import UIKit
 import ArcGIS
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     @IBOutlet weak var mapView: AGSMapView!
     
     override func viewDidLoad() {
@@ -27,8 +27,14 @@ class ViewController: UIViewController {
         let zoomPoint = AGSViewpoint(latitude: 40, longitude: -88, scale: 11500_00)
         
         self.mapView.map = map
+        self.mapView.touchDelegate = self
         
         self.mapView.setViewpoint(zoomPoint)
+    }
+    
+    // interface methods for AGSGeoViewTouchDelegate
+    func geoView(_ geoView: AGSGeoView, didTapAtScreenPoint screenPoint: CGPoint, mapPoint: AGSPoint) -> Void {
+        print(">>>>> DEBUG: <<<<<< touched at Point = {\(String(describing: mapPoint))}")
     }
     
 }
