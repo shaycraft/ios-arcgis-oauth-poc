@@ -16,16 +16,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbO-8W-nWo" customClass="AGSMapView">
-                                <rect key="frame" x="0.0" y="159" width="393" height="659"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wjn-Lj-yoZ">
-                                <rect key="frame" x="10" y="59.000000000000007" width="383" height="20.333333333333336"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Click the map for coords" textAlignment="natural" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wjn-Lj-yoZ">
+                                <rect key="frame" x="10" y="59" width="383" height="100"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbO-8W-nWo" customClass="AGSMapView">
+                                <rect key="frame" x="0.0" y="159" width="393" height="659"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -35,6 +35,7 @@
                             <constraint firstItem="Wjn-Lj-yoZ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="7cG-h1-oUe"/>
                             <constraint firstItem="Wjn-Lj-yoZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Gar-gc-yW8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="FbO-8W-nWo" secondAttribute="trailing" id="QN5-eS-pBj"/>
+                            <constraint firstItem="FbO-8W-nWo" firstAttribute="top" secondItem="Wjn-Lj-yoZ" secondAttribute="bottom" constant="50" id="cgs-6Y-5rv"/>
                             <constraint firstItem="FbO-8W-nWo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dIF-qI-8E9"/>
                             <constraint firstItem="FbO-8W-nWo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="vOh-eP-lb5"/>
                         </constraints>
