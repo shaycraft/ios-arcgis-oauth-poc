@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,26 +17,36 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbO-8W-nWo" customClass="AGSMapView">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="159" width="393" height="659"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wjn-Lj-yoZ">
+                                <rect key="frame" x="10" y="59.000000000000007" width="383" height="20.333333333333336"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="FbO-8W-nWo" secondAttribute="bottom" id="25N-cL-hWD"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Wjn-Lj-yoZ" secondAttribute="trailing" id="55N-0Q-Nvd"/>
+                            <constraint firstItem="Wjn-Lj-yoZ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="7cG-h1-oUe"/>
+                            <constraint firstItem="Wjn-Lj-yoZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Gar-gc-yW8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="FbO-8W-nWo" secondAttribute="trailing" id="QN5-eS-pBj"/>
                             <constraint firstItem="FbO-8W-nWo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dIF-qI-8E9"/>
-                            <constraint firstItem="FbO-8W-nWo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="vOh-eP-lb5"/>
+                            <constraint firstItem="FbO-8W-nWo" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="vOh-eP-lb5"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="debugLabel" destination="Wjn-Lj-yoZ" id="TRO-pz-a7D"/>
                         <outlet property="mapView" destination="FbO-8W-nWo" id="ODb-8Q-0o4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="4"/>
+            <point key="canvasLocation" x="139.69465648854961" y="3.5211267605633805"/>
         </scene>
     </scenes>
     <resources>

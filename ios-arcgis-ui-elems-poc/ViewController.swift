@@ -10,6 +10,7 @@ import ArcGIS
 
 class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     @IBOutlet weak var mapView: AGSMapView!
+    @IBOutlet weak var debugLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     func geoView(_ geoView: AGSGeoView, didTapAtScreenPoint screenPoint: CGPoint, mapPoint: AGSPoint) -> Void {
         let latLongPoint = AGSGeometryEngine.projectGeometry(mapPoint, to: AGSSpatialReference(wkid: 4326)!)
         print(">>>>>>> DEBUG: <<<<<<< Point = \(String(describing: latLongPoint))")
+        
+        self.debugLabel.text = String(describing: latLongPoint)
     }
     
 }
