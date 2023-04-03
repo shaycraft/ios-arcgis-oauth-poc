@@ -29,7 +29,12 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         // Do any additional setup after loading the view.
         
         self._setupMap()
+        
+        self.webView.load(URLRequest(url: URL(string: "https://gdl-xcelenergytest.msappproxy.net/arcgis/rest/services")!))
+        self.webView.navigationDelegate = self
+        self.btnToggle.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
         self._showBrowserUi()
+        
     }
     
     // UI events
@@ -67,12 +72,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         self.mapView.touchDelegate = self
         
         self.mapView.setViewpoint(zoomPoint)
-        self.mapView.isHidden = true
-        self.webView.load(URLRequest(url: URL(string: "https://google.com")!))
-        self.webView.navigationDelegate = self
-        self.btnToggle.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
         
-        self._addData()
     }
     
     private func _addData() -> Void {
