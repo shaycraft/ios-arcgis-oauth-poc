@@ -19,6 +19,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
     @IBOutlet weak var coordinateLabel: UILabel!
     @IBOutlet weak var webView: WKWebView!
     @IBOutlet weak var btnToggle: UIButton!
+    @IBOutlet weak var btnLoad: UIButton!
     
     // dbles
     private var _currentMode: CurrentMode = .webPanelAcive
@@ -33,6 +34,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         self.webView.load(URLRequest(url: URL(string: "https://gdl-xcelenergytest.msappproxy.net/arcgis/rest/services")!))
         self.webView.navigationDelegate = self
         self.btnToggle.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
+        self.btnLoad.addTarget(self, action: #selector(self._addData), for: .touchUpInside)
         self._showBrowserUi()
         
     }
@@ -75,7 +77,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         
     }
     
-    private func _addData() -> Void {
+    @objc private func _addData() -> Void {
         let featureLayer: AGSFeatureLayer = {
             let featureServiceURL = URL(string: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads/FeatureServer/0")!
             let featureServiceTable = AGSServiceFeatureTable(url: featureServiceURL)
