@@ -36,6 +36,12 @@
                                 <rect key="frame" x="0.0" y="787" width="393" height="31"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cZ2-yk-EEt">
+                                <rect key="frame" x="277" y="51" width="117" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Toggle View"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -51,7 +57,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="debugLabel" destination="Wjn-Lj-yoZ" id="TRO-pz-a7D"/>
+                        <outlet property="btnToggle" destination="cZ2-yk-EEt" id="RLi-DF-b5c"/>
+                        <outlet property="coordinateLabel" destination="Wjn-Lj-yoZ" id="TRO-pz-a7D"/>
                         <outlet property="mapView" destination="FbO-8W-nWo" id="ODb-8Q-0o4"/>
                         <outlet property="webView" destination="vkv-75-pAz" id="XH0-JX-6Z9"/>
                     </connections>
