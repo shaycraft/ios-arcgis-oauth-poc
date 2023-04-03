@@ -71,6 +71,38 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         self.webView.load(URLRequest(url: URL(string: "https://google.com")!))
         self.webView.navigationDelegate = self
         self.btnToggle.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
+        
+        self._addData()
+    }
+    
+    private func _addData() -> Void {
+        let featureLayer: AGSFeatureLayer = {
+            let featureServiceURL = URL(string: "https://services3.arcgis.com/GVgbJbqm8hXASVYi/arcgis/rest/services/Trailheads/FeatureServer/0")!
+            let featureServiceTable = AGSServiceFeatureTable(url: featureServiceURL)
+            return AGSFeatureLayer(featureTable: featureServiceTable)
+        }()
+        
+        featureLayer.load{ [weak self] (error) in
+            if let error = error {
+                print("ERROR IN LOADING FEATURE LAYER <<<<<<<<<<<<<<")
+                print(error.localizedDescription)
+                
+                return
+            }
+            
+            self?.mapView.map!.operationalLayers.add(featureLayer)
+            
+            self?.mapView.setViewpoint(
+                AGSViewpoint(
+                    latitude: 34.09042,
+                    longitude: -118.71511,
+                    scale: 200_000
+                )
+            )
+            
+            print("____ LAYER LOADED _____")
+        }
+        
     }
     
     private func _showMapUi() -> Void {
