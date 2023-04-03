@@ -1,3 +1,6 @@
 # ios-arcgis-ui-elems-poc
 
-POC to display lat longitude on user click on map, plus button event
+POC to test swift UI elements
+
+Also provides the ability to test app proxy SSO by logging into
+the endoint in a browser
