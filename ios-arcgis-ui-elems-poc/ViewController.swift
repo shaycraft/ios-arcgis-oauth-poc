@@ -13,15 +13,25 @@ enum CurrentMode {
     case mapPanelActive
 }
 
+
+extension ViewController: ASWebAuthenticationPresentationContextProviding {
+    func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
+        return view.window!
+    }
+}
+
 class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDelegate {
     // UI elements
     @IBOutlet weak var mapView: AGSMapView!
     @IBOutlet weak var coordinateLabel: UILabel!
-    @IBOutlet weak var webView: WKWebView!
-    @IBOutlet weak var btnToggle: UIButton!
+    @IBOutlet weak var btnLoad: UIButton!
     
     // dbles
     private var _currentMode: CurrentMode = .webPanelAcive
+    private var _session: ASWebAuthenticationSession?
+    private let _clientId: String = "be867936-b5b6-4bdd-b29e-fc6c932733b3"
+    private let _appId: String = "601ff8c0-9157-428b-b436-38feda19daa3"
+    
     
     
     override func viewDidLoad() {
@@ -29,34 +39,93 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         // Do any additional setup after loading the view.
         
         self._setupMap()
-        self._showBrowserUi()
+        
+        self.btnLoad.addTarget(self, action: #selector(self._startAuth), for: .touchUpInside)
+        
+        self._setupAuthSession()
+        
     }
-    
-    // UI events
-    
-    @objc func buttonTapped() {
-        print("Tapped!")
-        if (self._currentMode == .mapPanelActive) {
-            self._showBrowserUi()
-        } else {
-            self._showMapUi()
-        }
-    }
-    
     
     // interface methods for AGSGeoViewTouchDelegate
     func geoView(_ geoView: AGSGeoView, didTapAtScreenPoint screenPoint: CGPoint, mapPoint: AGSPoint) -> Void {
         let projectPoint = AGSGeometryEngine.projectGeometry(mapPoint, to: AGSSpatialReference(wkid: 4326)!)! as! AGSPoint
-        print(">>>>>>> DEBUG: <<<<<<< Point = \(String(describing: projectPoint))")
         
         self.coordinateLabel.text = "Lat/long = {\( String(format: "%.3f", projectPoint.x)), \(String(format: "%.3f", projectPoint.y)) }"
     }
     
-    func webView( _ webView: WKWebView, didFinish navigation: WKNavigation! ) {
-        print(">>>>>>> DEBUG: Navigation detected, url = \(self.webView.url!.absoluteString)")
+    // private functions
+    
+    private func _getQueryStringParameter(url: String, param: String) -> String? {
+        guard let url = URLComponents(string: url) else { return nil }
+        return url.queryItems?.first(where: { $0.name == param })?.value
     }
     
-    // private functions
+    private func _setupAuthSession() -> Void {
+        let authUrlString = "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/authorize?response_type=code&client_id=\(self._clientId)&scope=openid&redirect_uri=msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth"
+        
+        guard let authURL = URL(string: authUrlString) else { return }
+        
+        let scheme = "msauth.com.xcelenergy.gasfee.development"
+        
+        // Initialize the session.
+        self._session = ASWebAuthenticationSession(url: authURL, callbackURLScheme: scheme)
+        { callbackURL, error in
+            // Handle the callback.
+            
+            guard error == nil else {
+                print("Got an error in auth....")
+                print(error!.localizedDescription)
+                print(String(describing: error))
+                print(String(describing: callbackURL))
+                
+                self._addDataHelper()
+                return
+            }
+            guard let callbackURL = callbackURL else {
+                print("Error in callbackURL set")
+                return
+            }
+            
+            let codeToken = self._getQueryStringParameter(url: callbackURL.absoluteString, param: "code")!
+            self._issueCodeForToken(code: codeToken)
+            
+        }
+        
+        self._session!.presentationContextProvider = self
+        
+    }
+    
+    private func _issueCodeForToken(code: String) -> Void {
+        let url = URL(string: "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/token?")!
+        
+        let requestData = "code=\(code)&grant_type=authorization_code&scope=openid&client_id=\(self._clientId)&redirect_uri=msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth".data(using: .utf8)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let task = URLSession.shared.uploadTask(with: request, from: requestData) { data, response, error in
+            let callbackDataUrl = String(data: data!, encoding: .utf8)!
+            
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data!) as? [String: Any] {
+                    let accessToken = json["access_token"] as! String
+                    print("DEBUG:  token = ")
+                    print(accessToken)
+                    AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
+                    
+                    self._addDataHelper()
+                    
+                }
+            }
+            catch {
+                print("Error parsing json")
+                print(error.localizedDescription)
+            }
+            
+            
+        }
+        task.resume()
+    }
     
     private func _setupMap() -> Void {
         let map = AGSMap(basemapStyle: .arcGISTopographic)
@@ -67,24 +136,42 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         self.mapView.touchDelegate = self
         
         self.mapView.setViewpoint(zoomPoint)
-        self.mapView.isHidden = true
-        self.webView.load(URLRequest(url: URL(string: "https://google.com")!))
-        self.webView.navigationDelegate = self
-        self.btnToggle.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
+        
     }
     
-    private func _showMapUi() -> Void {
-        self.mapView.isHidden = false
-        self.webView.isHidden = true
-        self.coordinateLabel.isHidden = false
-        self._currentMode = .mapPanelActive
+    @objc private func _startAuth() -> Void {
+        self._session!.start()
     }
     
-    private func _showBrowserUi() -> Void {
-        self.mapView.isHidden = true
-        self.webView.isHidden = false
-        self.coordinateLabel.isHidden = true
-        self._currentMode = .webPanelAcive
+    private func _addDataHelper() -> Void {
+        
+        let featureLayer: AGSFeatureLayer = {
+            let featureServiceURL = URL(string: "https://gdl-xcelenergytest.msappproxy.net/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
+            let featureServiceTable = AGSServiceFeatureTable(url: featureServiceURL)
+            return AGSFeatureLayer(featureTable: featureServiceTable)
+        }()
+        
+        featureLayer.load{ [weak self] (error) in
+            if let error = error {
+                print("ERROR IN LOADING FEATURE LAYER <<<<<<<<<<<<<<")
+                print(error.localizedDescription)
+                
+                return
+            }
+            
+            self?.mapView.map!.operationalLayers.add(featureLayer)
+            
+            self?.mapView.setViewpoint(
+                AGSViewpoint(
+                    latitude: 34.09042,
+                    longitude: -118.71511,
+                    scale: 200_000
+                )
+            )
+            
+            print("____ LAYER LOADED _____")
+        }
+        
     }
 }
 
