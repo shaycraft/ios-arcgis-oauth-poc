@@ -8,30 +8,25 @@
 import UIKit
 import ArcGIS
 
-enum CurrentMode {
-    case webPanelAcive
-    case mapPanelActive
-}
-
-
 extension ViewController: ASWebAuthenticationPresentationContextProviding {
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         return view.window!
     }
 }
 
-class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDelegate {
+class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     // UI elements
     @IBOutlet weak var mapView: AGSMapView!
     @IBOutlet weak var coordinateLabel: UILabel!
     @IBOutlet weak var btnLoad: UIButton!
     
     // dbles
-    private var _currentMode: CurrentMode = .webPanelAcive
     private var _session: ASWebAuthenticationSession?
     private let _clientId: String = "be867936-b5b6-4bdd-b29e-fc6c932733b3"
     private let _appId: String = "601ff8c0-9157-428b-b436-38feda19daa3"
-    
+    private let _scheme: String = "msauth.com.xcelenergy.gasfee.development"
+    private let _redirectUri: String = "msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth"
+    private let _proxyBaseUri: String = "https://gdltestnativeapp-xcelenergytest.msappproxy.net"
     
     
     override func viewDidLoad() {
@@ -61,11 +56,13 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
     }
     
     private func _setupAuthSession() -> Void {
-        let authUrlString = "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/authorize?response_type=code&client_id=\(self._clientId)&scope=openid&redirect_uri=msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth"
+        print("Redirect = ")
+        print(self._redirectUri)
+        let authUrlString = "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/authorize?response_type=code&client_id=\(self._clientId)&scope=openid&redirect_uri=\(self._redirectUri)"
         
         guard let authURL = URL(string: authUrlString) else { return }
         
-        let scheme = "msauth.com.xcelenergy.gasfee.development"
+        let scheme = self._scheme
         
         // Initialize the session.
         self._session = ASWebAuthenticationSession(url: authURL, callbackURLScheme: scheme)
@@ -98,17 +95,18 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
     private func _issueCodeForToken(code: String) -> Void {
         let url = URL(string: "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/token?")!
         
-        let requestData = "code=\(code)&grant_type=authorization_code&scope=openid&client_id=\(self._clientId)&redirect_uri=msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth".data(using: .utf8)
+        
+        let requestData = "code=\(code)&grant_type=authorization_code&scope=openid&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
+        
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
         let task = URLSession.shared.uploadTask(with: request, from: requestData) { data, response, error in
-            let callbackDataUrl = String(data: data!, encoding: .utf8)!
-            
             do {
                 if let json = try JSONSerialization.jsonObject(with: data!) as? [String: Any] {
                     let accessToken = json["access_token"] as! String
+                    print(json["id_token"]! as! String)
                     print("DEBUG:  token = ")
                     print(accessToken)
                     AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
@@ -124,6 +122,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
             
             
         }
+        
         task.resume()
     }
     
@@ -146,7 +145,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
     private func _addDataHelper() -> Void {
         
         let featureLayer: AGSFeatureLayer = {
-            let featureServiceURL = URL(string: "https://gdl-xcelenergytest.msappproxy.net/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
+            let featureServiceURL = URL(string: "\(self._proxyBaseUri)/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
             let featureServiceTable = AGSServiceFeatureTable(url: featureServiceURL)
             return AGSFeatureLayer(featureTable: featureServiceTable)
         }()
