@@ -104,11 +104,10 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
         request.httpMethod = "POST"
         
         let task = URLSession.shared.uploadTask(with: request, from: requestData) { data, response, error in
-            let callbackDataUrl = String(data: data!, encoding: .utf8)!
-            
             do {
                 if let json = try JSONSerialization.jsonObject(with: data!) as? [String: Any] {
                     let accessToken = json["access_token"] as! String
+                    print(json["user_id"])
                     print("DEBUG:  token = ")
                     print(accessToken)
                     AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
@@ -146,7 +145,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate, WKNavigationDel
     private func _addDataHelper() -> Void {
         
         let featureLayer: AGSFeatureLayer = {
-            let featureServiceURL = URL(string: "https://gdl-xcelenergytest.msappproxy.net/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
+            let featureServiceURL = URL(string: "https://gdltestnativeapp-xcelenergytest.msappproxy.net//arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
             let featureServiceTable = AGSServiceFeatureTable(url: featureServiceURL)
             return AGSFeatureLayer(featureTable: featureServiceTable)
         }()
