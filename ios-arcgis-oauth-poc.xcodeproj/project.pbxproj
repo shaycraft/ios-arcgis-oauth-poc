@@ -13,6 +13,7 @@
 		C72FDDD229D91C630072DABB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C72FDDD029D91C630072DABB /* Main.storyboard */; };
 		C72FDDD429D91C650072DABB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C72FDDD329D91C650072DABB /* Assets.xcassets */; };
 		C72FDDD729D91C650072DABB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C72FDDD529D91C650072DABB /* LaunchScreen.storyboard */; };
+		C776698129E14DA100092F81 /* ConfigService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7FBCD7829E14A4E00BC4582 /* ConfigService.swift */; };
 		C7CFED2429D94AF200702382 /* Runtimecore.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7CFED2229D94AF100702382 /* Runtimecore.xcframework */; };
 		C7CFED2529D94AF200702382 /* Runtimecore.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C7CFED2229D94AF100702382 /* Runtimecore.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C7CFED2629D94AF200702382 /* ArcGIS.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7CFED2329D94AF200702382 /* ArcGIS.xcframework */; };
@@ -46,6 +47,7 @@
 		C72FDDDE29D91CA20072DABB /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		C7CFED2229D94AF100702382 /* Runtimecore.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Runtimecore.xcframework; path = ../../../Library/SDKs/ArcGIS/Frameworks/Runtimecore.xcframework; sourceTree = "<group>"; };
 		C7CFED2329D94AF200702382 /* ArcGIS.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = ArcGIS.xcframework; path = ../../../Library/SDKs/ArcGIS/Frameworks/ArcGIS.xcframework; sourceTree = "<group>"; };
+		C7FBCD7829E14A4E00BC4582 /* ConfigService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 			isa = PBXGroup;
 			children = (
 				C72FDDCA29D91C630072DABB /* AppDelegate.swift */,
+				C7FBCD7829E14A4E00BC4582 /* ConfigService.swift */,
 				C72FDDCC29D91C630072DABB /* SceneDelegate.swift */,
 				C72FDDCE29D91C630072DABB /* ViewController.swift */,
 				C72FDDD029D91C630072DABB /* Main.storyboard */,
@@ -174,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C776698129E14DA100092F81 /* ConfigService.swift in Sources */,
 				C72FDDCF29D91C630072DABB /* ViewController.swift in Sources */,
 				C72FDDCB29D91C630072DABB /* AppDelegate.swift in Sources */,
 				C72FDDCD29D91C630072DABB /* SceneDelegate.swift in Sources */,

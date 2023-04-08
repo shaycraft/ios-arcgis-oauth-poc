@@ -22,8 +22,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     
     // dbles
     private var _session: ASWebAuthenticationSession?
-    private let _clientId: String = "be867936-b5b6-4bdd-b29e-fc6c932733b3"
-    private let _appId: String = "601ff8c0-9157-428b-b436-38feda19daa3"
+    private let _clientId: String = ConfigService.getConfigValue(key: "OAUTH_CLIENT_ID") as! String
+    private let _appId: String = ConfigService.getConfigValue(key: "OAUTH_APP_ID") as! String
     private let _scheme: String = "msauth.com.xcelenergy.gasfee.development"
     private let _redirectUri: String = "msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth%2F"
     private let _proxyBaseUri: String = "https://gdl-xcelenergytest.msappproxy.net"
