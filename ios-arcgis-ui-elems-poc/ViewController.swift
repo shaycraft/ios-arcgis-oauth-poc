@@ -159,8 +159,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
             
             self?.mapView.setViewpoint(
                 AGSViewpoint(
-                    latitude: 34.09042,
-                    longitude: -118.71511,
+                    latitude: 39.737,
+                    longitude: -104.990,
                     scale: 200_000
                 )
             )
