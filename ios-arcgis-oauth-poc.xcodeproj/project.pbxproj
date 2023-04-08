@@ -66,7 +66,7 @@
 		C72FDDBE29D91C620072DABB = {
 			isa = PBXGroup;
 			children = (
-				C72FDDC929D91C630072DABB /* ios-arcgis-ui-elems-poc */,
+				C72FDDC929D91C630072DABB /* ios-arcgis-oauth-poc */,
 				C72FDDC829D91C630072DABB /* Products */,
 				C7CFED2129D94AF100702382 /* Frameworks */,
 			);
@@ -80,7 +80,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C72FDDC929D91C630072DABB /* ios-arcgis-ui-elems-poc */ = {
+		C72FDDC929D91C630072DABB /* ios-arcgis-oauth-poc */ = {
 			isa = PBXGroup;
 			children = (
 				C72FDDCA29D91C630072DABB /* AppDelegate.swift */,
@@ -93,7 +93,7 @@
 				C72FDDD829D91C650072DABB /* Info.plist */,
 				C72FDDDE29D91CA20072DABB /* Secrets.xcconfig */,
 			);
-			path = "ios-arcgis-ui-elems-poc";
+			path = "ios-arcgis-oauth-poc";
 			sourceTree = "<group>";
 		};
 		C7CFED2129D94AF100702382 /* Frameworks */ = {
@@ -331,7 +331,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ios-arcgis-ui-elems-poc/Info.plist";
+				INFOPLIST_FILE = "ios-arcgis-oauth-poc/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -359,7 +359,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ios-arcgis-ui-elems-poc/Info.plist";
+				INFOPLIST_FILE = "ios-arcgis-oauth-poc/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
