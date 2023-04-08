@@ -28,7 +28,6 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private let _redirectUri: String = "msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth%2F"
     private let _proxyBaseUri: String = "https://gdl-xcelenergytest.msappproxy.net"
     private let _scope: String = "https%3A%2F%2Fgdl-xcelenergytest.msappproxy.net%2Farcgis%2Fuser_impersonation"
-//     private let _scope: String = "openid"
     
     
     override func viewDidLoad() {
@@ -58,8 +57,6 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     }
     
     private func _setupAuthSession() -> Void {
-        print("Redirect = ")
-        print(self._redirectUri)
         let authUrlString = "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/authorize?response_type=code&client_id=\(self._clientId)&scope=\(self._scope)&redirect_uri=\(self._redirectUri)"
         
         guard let authURL = URL(string: authUrlString) else { return }
@@ -77,7 +74,6 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
                 print(String(describing: error))
                 print(String(describing: callbackURL))
                 
-                self._addDataHelper()
                 return
             }
             guard let callbackURL = callbackURL else {
@@ -109,12 +105,10 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
             do {
                 if let json = try JSONSerialization.jsonObject(with: data!) as? [String: Any] {
                     let accessToken = json["access_token"] as! String
-                    //print(json["id_token"]! as! String)
-                    print("DEBUG:  token = ")
-                    print(accessToken)
+                    
                     AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
                     
-                    self._addDataHelper()
+                    self._addMapLayers()
                     
                 }
             }
@@ -145,7 +139,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         self._session!.start()
     }
     
-    private func _addDataHelper() -> Void {
+    private func _addMapLayers() -> Void {
         
         let featureLayer: AGSFeatureLayer = {
             let featureServiceURL = URL(string: "\(self._proxyBaseUri)/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
