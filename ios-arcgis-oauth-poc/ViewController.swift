@@ -22,12 +22,12 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     
     // dbles
     private var _session: ASWebAuthenticationSession?
-    private let _clientId: String = "be867936-b5b6-4bdd-b29e-fc6c932733b3"
-    private let _appId: String = "601ff8c0-9157-428b-b436-38feda19daa3"
-    private let _scheme: String = "msauth.com.xcelenergy.gasfee.development"
-    private let _redirectUri: String = "msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth%2F"
-    private let _proxyBaseUri: String = "https://gdl-xcelenergytest.msappproxy.net"
-    private let _scope: String = "https%3A%2F%2Fgdl-xcelenergytest.msappproxy.net%2Farcgis%2Fuser_impersonation"
+    private let _clientId: String = ConfigService.getConfigValue(key: "OAUTH_CLIENT_ID") as! String
+    private let _appId: String = ConfigService.getConfigValue(key: "OAUTH_APP_ID") as! String
+    private let _scheme: String = ConfigService.getConfigValue(key: "OAUTH_SCHEME") as! String
+    private let _redirectUri: String = ConfigService.getConfigValue(key: "OAUTH_REDIRECT_URI") as! String
+    private let _proxyBaseUri: String = ConfigService.getConfigValue(key: "PROXY_BASE_URL") as! String
+    private let _scope: String = ConfigService.getConfigValue(key: "OAUTH_SCOPE") as! String
     
     
     override func viewDidLoad() {
@@ -80,7 +80,6 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
                 print("Error in callbackURL set")
                 return
             }
-            print(callbackURL.absoluteString)
             
             let codeToken = self._getQueryStringParameter(url: callbackURL.absoluteString, param: "code")!
             self._issueCodeForToken(code: codeToken)
@@ -142,6 +141,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private func _addMapLayers() -> Void {
         
         let featureLayer: AGSFeatureLayer = {
+            print("DEBUG foobar")
+            print(self._proxyBaseUri)
             let featureServiceURL = URL(string: "\(self._proxyBaseUri)/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
             let featureServiceTable = AGSServiceFeatureTable(url: featureServiceURL)
             return AGSFeatureLayer(featureTable: featureServiceTable)
