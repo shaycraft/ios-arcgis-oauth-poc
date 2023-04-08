@@ -35,7 +35,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C72FDDC729D91C630072DABB /* ios-arcgis-ui-elems-poc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-arcgis-ui-elems-poc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C72FDDC729D91C630072DABB /* ios-arcgis-oauth-poc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-arcgis-oauth-poc.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C72FDDCA29D91C630072DABB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C72FDDCC29D91C630072DABB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C72FDDCE29D91C630072DABB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 		C72FDDC829D91C630072DABB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C72FDDC729D91C630072DABB /* ios-arcgis-ui-elems-poc.app */,
+				C72FDDC729D91C630072DABB /* ios-arcgis-oauth-poc.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,9 +105,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C72FDDC629D91C620072DABB /* ios-arcgis-ui-elems-poc */ = {
+		C72FDDC629D91C620072DABB /* ios-arcgis-oauth-poc */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C72FDDDB29D91C650072DABB /* Build configuration list for PBXNativeTarget "ios-arcgis-ui-elems-poc" */;
+			buildConfigurationList = C72FDDDB29D91C650072DABB /* Build configuration list for PBXNativeTarget "ios-arcgis-oauth-poc" */;
 			buildPhases = (
 				C72FDDC329D91C620072DABB /* Sources */,
 				C72FDDC429D91C620072DABB /* Frameworks */,
@@ -118,9 +118,9 @@
 			);
 			dependencies = (
 			);
-			name = "ios-arcgis-ui-elems-poc";
+			name = "ios-arcgis-oauth-poc";
 			productName = "ios-arcgis-ui-elems-poc";
-			productReference = C72FDDC729D91C630072DABB /* ios-arcgis-ui-elems-poc.app */;
+			productReference = C72FDDC729D91C630072DABB /* ios-arcgis-oauth-poc.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -138,7 +138,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C72FDDC229D91C620072DABB /* Build configuration list for PBXProject "ios-arcgis-ui-elems-poc" */;
+			buildConfigurationList = C72FDDC229D91C620072DABB /* Build configuration list for PBXProject "ios-arcgis-oauth-poc" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -151,7 +151,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C72FDDC629D91C620072DABB /* ios-arcgis-ui-elems-poc */,
+				C72FDDC629D91C620072DABB /* ios-arcgis-oauth-poc */,
 			);
 		};
 /* End PBXProject section */
@@ -377,7 +377,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C72FDDC229D91C620072DABB /* Build configuration list for PBXProject "ios-arcgis-ui-elems-poc" */ = {
+		C72FDDC229D91C620072DABB /* Build configuration list for PBXProject "ios-arcgis-oauth-poc" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C72FDDD929D91C650072DABB /* Debug */,
@@ -386,7 +386,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C72FDDDB29D91C650072DABB /* Build configuration list for PBXNativeTarget "ios-arcgis-ui-elems-poc" */ = {
+		C72FDDDB29D91C650072DABB /* Build configuration list for PBXNativeTarget "ios-arcgis-oauth-poc" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C72FDDDC29D91C650072DABB /* Debug */,
