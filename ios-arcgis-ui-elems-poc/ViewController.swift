@@ -25,8 +25,9 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private let _clientId: String = "be867936-b5b6-4bdd-b29e-fc6c932733b3"
     private let _appId: String = "601ff8c0-9157-428b-b436-38feda19daa3"
     private let _scheme: String = "msauth.com.xcelenergy.gasfee.development"
-    private let _redirectUri: String = "msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth"
-    private let _proxyBaseUri: String = "https://gdltestnativeapp-xcelenergytest.msappproxy.net"
+    private let _redirectUri: String = "msauth.com.xcelenergy.gasfee.development%3A%2F%2Fauth%2F"
+    private let _proxyBaseUri: String = "https://gdl-xcelenergytest.msappproxy.net"
+    private let _scope: String = "https%3A%2F%2Fgdl-xcelenergytest.msappproxy.net%2Farcgis%2Fuser_impersonation"
     
     
     override func viewDidLoad() {
@@ -56,9 +57,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     }
     
     private func _setupAuthSession() -> Void {
-        print("Redirect = ")
-        print(self._redirectUri)
-        let authUrlString = "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/authorize?response_type=code&client_id=\(self._clientId)&scope=openid&redirect_uri=\(self._redirectUri)"
+        let authUrlString = "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/authorize?response_type=code&client_id=\(self._clientId)&scope=\(self._scope)&redirect_uri=\(self._redirectUri)"
         
         guard let authURL = URL(string: authUrlString) else { return }
         
@@ -75,13 +74,13 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
                 print(String(describing: error))
                 print(String(describing: callbackURL))
                 
-                self._addDataHelper()
                 return
             }
             guard let callbackURL = callbackURL else {
                 print("Error in callbackURL set")
                 return
             }
+            print(callbackURL.absoluteString)
             
             let codeToken = self._getQueryStringParameter(url: callbackURL.absoluteString, param: "code")!
             self._issueCodeForToken(code: codeToken)
@@ -96,7 +95,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         let url = URL(string: "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/token?")!
         
         
-        let requestData = "code=\(code)&grant_type=authorization_code&scope=openid&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
+        let requestData = "code=\(code)&grant_type=authorization_code&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
         
         
         var request = URLRequest(url: url)
@@ -106,12 +105,10 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
             do {
                 if let json = try JSONSerialization.jsonObject(with: data!) as? [String: Any] {
                     let accessToken = json["access_token"] as! String
-                    print(json["id_token"]! as! String)
-                    print("DEBUG:  token = ")
-                    print(accessToken)
+                    
                     AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
                     
-                    self._addDataHelper()
+                    self._addMapLayers()
                     
                 }
             }
@@ -142,7 +139,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         self._session!.start()
     }
     
-    private func _addDataHelper() -> Void {
+    private func _addMapLayers() -> Void {
         
         let featureLayer: AGSFeatureLayer = {
             let featureServiceURL = URL(string: "\(self._proxyBaseUri)/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
@@ -162,8 +159,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
             
             self?.mapView.setViewpoint(
                 AGSViewpoint(
-                    latitude: 34.09042,
-                    longitude: -118.71511,
+                    latitude: 39.737,
+                    longitude: -104.990,
                     scale: 200_000
                 )
             )
