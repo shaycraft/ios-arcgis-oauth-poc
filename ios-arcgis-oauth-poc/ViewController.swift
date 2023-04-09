@@ -7,6 +7,7 @@
 
 import UIKit
 import ArcGIS
+import AuthenticationServices
 
 extension ViewController: ASWebAuthenticationPresentationContextProviding {
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
