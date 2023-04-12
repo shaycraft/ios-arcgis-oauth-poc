@@ -7,6 +7,7 @@
 
 import UIKit
 import ArcGIS
+import AuthenticationServices
 
 extension ViewController: ASWebAuthenticationPresentationContextProviding {
     func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
@@ -141,7 +142,6 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private func _addMapLayers() -> Void {
         
         let featureLayer: AGSFeatureLayer = {
-            print("DEBUG foobar")
             print(self._proxyBaseUri)
             let featureServiceURL = URL(string: "\(self._proxyBaseUri)/arcgis/rest/services/GFEE/Gas_Distribution/FeatureServer/11")!
             let featureServiceTable = AGSServiceFeatureTable(url: featureServiceURL)
