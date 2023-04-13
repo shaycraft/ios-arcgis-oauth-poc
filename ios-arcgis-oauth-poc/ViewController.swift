@@ -29,6 +29,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private let _redirectUri: String = ConfigService.getConfigValue(key: "OAUTH_REDIRECT_URI") as! String
     private let _proxyBaseUri: String = ConfigService.getConfigValue(key: "PROXY_BASE_URL") as! String
     private let _scope: String = ConfigService.getConfigValue(key: "OAUTH_SCOPE") as! String
+    private var _refreshToken: String?
+    private var _tokenExpiry: UInt32?
     
     
     override func viewDidLoad() {
@@ -91,25 +93,40 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         
     }
     
-    private func _issueCodeForToken(code: String) -> Void {
+    private func _issueCodeForToken(code: String, isRefresh: Bool = false) -> Void {
+        var requestData: Data?
         let url = URL(string: "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/token?")!
-        
-        
-        let requestData = "code=\(code)&grant_type=authorization_code&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
-        
+
+        if !isRefresh {
+            requestData = "code=\(code)&grant_type=authorization_code&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
+        } else {
+             requestData = "refresh_token=\(code)&grant_type=refresh_token&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
+        }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
         let task = URLSession.shared.uploadTask(with: request, from: requestData) { data, response, error in
             do {
+                // update buton text
+                let myButton = self.btnLoad
+                DispatchQueue.main.async {
+                    myButton!.setTitle("Refresh", for: .normal)
+                }
+                
+                
+                
                 if let json = try JSONSerialization.jsonObject(with: data!) as? [String: Any] {
+                    self._refreshToken = json["refresh_token"] as? String
+                    self._tokenExpiry = json["ext_expires_in"] as? UInt32
                     let accessToken = json["access_token"] as! String
                     
                     AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
+                    print("DEBUG:  headers set...")
                     
-                    self._addMapLayers()
-                    
+                    if (!isRefresh) {
+                        self._addMapLayers()
+                    }
                 }
             }
             catch {
@@ -136,7 +153,18 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     }
     
     @objc private func _startAuth() -> Void {
-        self._session!.start()
+        if let refreshToken = self._refreshToken {
+            self._initRefreshToken(token: refreshToken);
+        } else {
+            self._session!.start()
+        }
+        
+        
+    }
+    
+    private func _initRefreshToken(token: String) -> Void {
+        print("Refreshing token now....")
+        self._issueCodeForToken(code: token, isRefresh: true)
     }
     
     private func _addMapLayers() -> Void {
