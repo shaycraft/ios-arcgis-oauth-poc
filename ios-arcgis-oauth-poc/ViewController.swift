@@ -29,6 +29,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private let _redirectUri: String = ConfigService.getConfigValue(key: "OAUTH_REDIRECT_URI") as! String
     private let _proxyBaseUri: String = ConfigService.getConfigValue(key: "PROXY_BASE_URL") as! String
     private let _scope: String = ConfigService.getConfigValue(key: "OAUTH_SCOPE") as! String
+    private var _refreshToken: String?
+    private var _tokenExpiry: UInt32?
     
     
     override func viewDidLoad() {
@@ -103,7 +105,17 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         
         let task = URLSession.shared.uploadTask(with: request, from: requestData) { data, response, error in
             do {
+                // update buton text
+                let myButton = self.btnLoad
+                DispatchQueue.main.async {
+                    myButton!.setTitle("Refresh", for: .normal)
+                }
+                
+                
+                
                 if let json = try JSONSerialization.jsonObject(with: data!) as? [String: Any] {
+                    self._refreshToken = json["refresh_token"] as? String
+                    self._tokenExpiry = json["ext_expires_in"] as? UInt32
                     let accessToken = json["access_token"] as! String
                     
                     AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
@@ -136,7 +148,17 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     }
     
     @objc private func _startAuth() -> Void {
-        self._session!.start()
+        if let refreshToken = self._refreshToken {
+            self._initRefreshToken();
+        } else {
+            self._session!.start()
+        }
+        
+        
+    }
+    
+    private func _initRefreshToken() -> Void {
+        print("Refreshing token now....")
     }
     
     private func _addMapLayers() -> Void {
