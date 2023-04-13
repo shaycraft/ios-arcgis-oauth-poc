@@ -93,12 +93,15 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         
     }
     
-    private func _issueCodeForToken(code: String) -> Void {
+    private func _issueCodeForToken(code: String, isRefresh: Bool = false) -> Void {
+        var requestData: Data?
         let url = URL(string: "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/token?")!
-        
-        
-        let requestData = "code=\(code)&grant_type=authorization_code&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
-        
+
+        if !isRefresh {
+            requestData = "code=\(code)&grant_type=authorization_code&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
+        } else {
+             requestData = "refresh_token=\(code)&grant_type=refresh_token&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
+        }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -119,9 +122,11 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
                     let accessToken = json["access_token"] as! String
                     
                     AGSRequestConfiguration.global().userHeaders = [ "Authorization": "Bearer \(accessToken)" ]
+                    print("DEBUG:  headers set...")
                     
-                    self._addMapLayers()
-                    
+                    if (!isRefresh) {
+                        self._addMapLayers()
+                    }
                 }
             }
             catch {
@@ -149,7 +154,7 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     
     @objc private func _startAuth() -> Void {
         if let refreshToken = self._refreshToken {
-            self._initRefreshToken();
+            self._initRefreshToken(token: refreshToken);
         } else {
             self._session!.start()
         }
@@ -157,8 +162,9 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         
     }
     
-    private func _initRefreshToken() -> Void {
+    private func _initRefreshToken(token: String) -> Void {
         print("Refreshing token now....")
+        self._issueCodeForToken(code: token, isRefresh: true)
     }
     
     private func _addMapLayers() -> Void {
