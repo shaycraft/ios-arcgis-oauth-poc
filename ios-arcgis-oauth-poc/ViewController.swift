@@ -21,7 +21,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     @IBOutlet weak var coordinateLabel: UILabel!
     @IBOutlet weak var btnLoad: UIButton!
     
-    // dbles
+    // private variables
+    // oauth
     private var _session: ASWebAuthenticationSession?
     private let _clientId: String = ConfigService.getConfigValue(key: "OAUTH_CLIENT_ID") as! String
     private let _appId: String = ConfigService.getConfigValue(key: "OAUTH_APP_ID") as! String
@@ -31,13 +32,26 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private let _scope: String = ConfigService.getConfigValue(key: "OAUTH_SCOPE") as! String
     private var _refreshToken: String?
     private var _tokenExpiry: UInt32?
-    
+    private var _downloadDirectoryMap: URL?
+    // GIS download
+    var offlineMapTask: AGSOfflineMapTask?
+    var preplannedParameters: AGSDownloadPreplannedOfflineMapParameters?
+    var downloadPreplannedMapJob: AGSGenerateOfflineMapJob?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        self._setupMap()
+        // self._setupMap()
+        
+        do {
+            self._downloadDirectoryMap = try self._createTemporaryDirectory(directoryName: "GIS_DOWNLOAD_MAP_PAKS")
+        }
+        catch {
+            print("ERROR dreateing download directory...")
+            print(error.localizedDescription)
+            return
+        }
         
         self.btnLoad.addTarget(self, action: #selector(self._startAuth), for: .touchUpInside)
         
@@ -96,11 +110,11 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     private func _issueCodeForToken(code: String, isRefresh: Bool = false) -> Void {
         var requestData: Data?
         let url = URL(string: "https://login.microsoftonline.com/\(self._appId)/oauth2/v2.0/token?")!
-
+        
         if !isRefresh {
             requestData = "code=\(code)&grant_type=authorization_code&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
         } else {
-             requestData = "refresh_token=\(code)&grant_type=refresh_token&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
+            requestData = "refresh_token=\(code)&grant_type=refresh_token&scope=\(self._scope)&client_id=\(self._clientId)&redirect_uri=\(_redirectUri)".data(using: .utf8)
         }
         
         var request = URLRequest(url: url)
@@ -125,7 +139,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
                     print("DEBUG:  headers set...")
                     
                     if (!isRefresh) {
-                        self._addMapLayers()
+                        // self._addMapLayers()
+                        self._setupMapOnline()
                     }
                 }
             }
@@ -140,7 +155,12 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         task.resume()
     }
     
+    private func _setupMapOnline() -> Void {
+        print("Setting up map...")
+    }
+    
     private func _setupMap() -> Void {
+        
         let map = AGSMap(basemapStyle: .arcGISTopographic)
         
         let zoomPoint = AGSViewpoint(latitude: 40, longitude: -88, scale: 11500_00)
@@ -197,6 +217,33 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
             print("____ LAYER LOADED _____")
         }
         
+    }
+    
+    private func _createTemporaryDirectory(directoryName: String) throws -> URL? {
+        let defaultManager = FileManager.default
+        let temporaryDownloadURL = defaultManager.temporaryDirectory.appendingPathComponent(directoryName)
+        
+        if defaultManager.fileExists(atPath: temporaryDownloadURL.path) {
+            try defaultManager.removeItem(atPath: temporaryDownloadURL.path)
+        }
+        try  defaultManager.createDirectory(at: temporaryDownloadURL, withIntermediateDirectories: true, attributes: nil)
+        
+        print( String(describing: defaultManager.subpaths(atPath: FileManager.default.temporaryDirectory.path)))
+        
+        return temporaryDownloadURL
+    }
+    
+    private func _getMapId() -> String {
+        // trailheads sample data from tutorial
+        // return "ef722b2c44c2443090d98115a9ce8058"
+        // TIGER census data roads/waters sample (Colorado)
+        //    private var MAP_PORTAL_ID: String! = "48045b4e68af4dfe87c8765bfee4a954"
+        // Xcel example on prem portal (dev region)
+        //    private let MAP_PORTAL_ID: String! = "31f6634899e24180a43e5fa994e69ec5"
+        // Xcel example on prem portal (gdl-tst)
+        //        return "d45931415e4141cf8e18851980127176"
+        // Darius' map:
+        return "fe835b80f7e54f35b9de90f1ba587f5c"
     }
 }
 
