@@ -42,6 +42,8 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        AGSAuthenticationManager.shared().delegate = self
+        
         // self._setupMap()
         
         do {
@@ -156,7 +158,34 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
     }
     
     private func _setupMapOnline() -> Void {
+        
         print("Setting up map...")
+        let map = self._initPortalWithMap(mapId: self._getMapId(), useArcGisOnline: false)
+        
+        map.load{ error -> Void in
+            if let error = error {
+                print("Error in loading online map!!!")
+                print(error.localizedDescription)
+                
+            } else {
+                print("online map loaded successfully!")
+                self.mapView.map = map
+            }
+        }
+    }
+    
+    private func _initPortalWithMap(mapId: String, useArcGisOnline: Bool) -> AGSMap {
+        var portal: AGSPortal
+        
+        if (useArcGisOnline == true) {
+            print("Using arcgis online veresion")
+            portal = AGSPortal.arcGISOnline(withLoginRequired: false)
+        } else {
+            print("Using portal version")
+            portal = AGSPortal(url: URL(string: "https://gdl-xcelenergytest.msappproxy.net/arcgis/home")!, loginRequired: false)
+        }
+        
+        return AGSMap(item: AGSPortalItem(portal: portal, itemID: mapId))
     }
     
     private func _setupMap() -> Void {
@@ -243,7 +272,18 @@ class ViewController: UIViewController, AGSGeoViewTouchDelegate {
         // Xcel example on prem portal (gdl-tst)
         //        return "d45931415e4141cf8e18851980127176"
         // Darius' map:
-        return "fe835b80f7e54f35b9de90f1ba587f5c"
+        // return "fe835b80f7e54f35b9de90f1ba587f5c"
+        // Mine with all layers:
+        return "e378b213219f4abb9a2cbc8aa1aa33c4"
     }
 }
 
+/// Set the credentials to allow access for the Naperville damage assessment feature service.
+extension ViewController: AGSAuthenticationManagerDelegate {
+    func authenticationManager(_ authenticationManager: AGSAuthenticationManager, didReceive challenge: AGSAuthenticationChallenge) {
+        print("DEBUG----->  Authentication challenge detected")
+        
+        let credential = AGSCredential(user: "xcel_gfee", password: "Xcel-Gfee-321")
+        challenge.continue(with: credential)
+    }
+}
